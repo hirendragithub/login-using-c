@@ -1,112 +1,3 @@
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-//
-//#define MAX_USERNAME_LENGTH 50
-//#define MAX_PASSWORD_LENGTH 50
-//#define MAX_USERS 100
-//#define DATABASE_FILE "users.txt"
-//
-//// Structure to hold user information
-//struct User {
-//    char username[MAX_USERNAME_LENGTH];
-//    char password[MAX_PASSWORD_LENGTH];
-//};
-//
-//// Array to store user data
-//struct User users[MAX_USERS];
-//int numUsers = 0;
-//
-//// Function to load user data from file
-//void loadUsersFromFile() {
-//    FILE *file = fopen(DATABASE_FILE, "r");
-//    if (file != NULL) {
-//        while (fscanf(file, "%s %s", users[numUsers].username, users[numUsers].password) != EOF) {
-//            numUsers++;
-//        }
-//        fclose(file);
-//    }
-//}
-//
-//// Function to save new user data to file
-//void saveUserToFile(struct User newUser) {
-//    FILE *file = fopen(DATABASE_FILE, "a");
-//    if (file != NULL) {
-//        fprintf(file, "%s %s\n", newUser.username, newUser.password);
-//        fclose(file);
-//    }
-//}
-//
-//// Function for user signup
-//void signup() {
-//    struct User newUser;
-//    printf("Enter username: ");
-//    scanf("%s", newUser.username);
-//    printf("Enter password: ");
-//    scanf("%s", newUser.password);
-//
-//    // Check if username already exists
-//    for (int i = 0; i < numUsers; i++) {
-//        if (strcmp(newUser.username, users[i].username) == 0) {
-//            printf("Username already exists!\n");
-//            return;
-//        }
-//    }
-//
-//    // Save new user data
-//    saveUserToFile(newUser);
-//    printf("Signup successful!\n");
-//}
-//
-//// Function for user login
-//void login() {
-//    char username[MAX_USERNAME_LENGTH];
-//    char password[MAX_PASSWORD_LENGTH];
-//    printf("Enter username: ");
-//    scanf("%s", username);
-//    printf("Enter password: ");
-//    scanf("%s", password);
-//
-//    // Check if entered username and password match any user data
-//    for (int i = 0; i < numUsers; i++) {
-//        if (strcmp(username, users[i].username) == 0 && strcmp(password, users[i].password) == 0) {
-//            printf("Login successful!\n");
-//            return;
-//        }
-//    }
-//
-//    printf("Invalid username or password!\n");
-//}
-//
-//// Main function
-//int main() {
-//    loadUsersFromFile();
-//    int choice;
-//    do {
-//        printf("1. Signup\n");
-//        printf("2. Login\n");
-//        printf("3. Exit\n");
-//        printf("Enter your choice: ");
-//        scanf("%d", &choice);
-//
-//        switch (choice) {
-//            case 1:
-//                signup();
-//                break;
-//            case 2:
-//                login();
-//                break;
-//            case 3:
-//                printf("Exiting...\n");
-//                break;
-//            default:
-//                printf("Invalid choice!\n");
-//        }
-//    } while (choice != 3);
-//
-//    return 0;
-//}
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -116,104 +7,103 @@
 #define MAX_USERS 100
 #define DATABASE_FILE "users.txt"
 
+// Structure to hold user information
 struct User {
-    char username[MAX_USERNAME_LENGTH];
-    char password[MAX_PASSWORD_LENGTH];
+   char username[MAX_USERNAME_LENGTH];
+   char password[MAX_PASSWORD_LENGTH];
 };
 
+// Array to store user data
 struct User users[MAX_USERS];
 int numUsers = 0;
 
+// Function to load user data from file
 void loadUsersFromFile() {
-    FILE *file = fopen(DATABASE_FILE, "r");
-    if (file == NULL) {
-        printf("Error: Unable to open file %s\n", DATABASE_FILE);
-        exit(1);
-    }
-    while (numUsers < MAX_USERS && fscanf(file, "%49s %49s", users[numUsers].username, users[numUsers].password) != EOF) {
-        numUsers++;
-    }
-    fclose(file);
+   FILE *file = fopen(DATABASE_FILE, "r");
+   if (file != NULL) {
+       while (fscanf(file, "%s %s", users[numUsers].username, users[numUsers].password) != EOF) {
+           numUsers++;
+       }
+       fclose(file);
+   }
 }
 
+// Function to save new user data to file
 void saveUserToFile(struct User newUser) {
-    FILE *file = fopen(DATABASE_FILE, "a");
-    if (file == NULL) {
-        printf("Error: Unable to open file %s\n", DATABASE_FILE);
-        exit(1);
-    }
-    fprintf(file, "%s %s\n", newUser.username, newUser.password);
-    fclose(file);
+   FILE *file = fopen(DATABASE_FILE, "a");
+   if (file != NULL) {
+       fprintf(file, "%s %s\n", newUser.username, newUser.password);
+       fclose(file);
+   }
 }
 
+// Function for user signup
 void signup() {
-    struct User newUser;
-    printf("Enter username: ");
-    fgets(newUser.username, MAX_USERNAME_LENGTH, stdin);
-    newUser.username[strcspn(newUser.username, "\n")] = '\0'; // Remove trailing newline if present
-    printf("Enter password: ");
-    fgets(newUser.password, MAX_PASSWORD_LENGTH, stdin);
-    newUser.password[strcspn(newUser.password, "\n")] = '\0'; // Remove trailing newline if present
+   struct User newUser;
+   printf("Enter username: ");
+   scanf("%s", newUser.username);
+   printf("Enter password: ");
+   scanf("%s", newUser.password);
 
-    for (int i = 0; i < numUsers; i++) {
-        if (strcmp(newUser.username, users[i].username) == 0) {
-            printf("Username already exists!\n");
-            return;
-        }
-    }
+   // Check if username already exists
+   for (int i = 0; i < numUsers; i++) {
+       if (strcmp(newUser.username, users[i].username) == 0) {
+           printf("Username already exists!\n");
+           return;
+       }
+   }
 
-    saveUserToFile(newUser);
-    printf("Signup successful!\n");
+   // Save new user data
+   saveUserToFile(newUser);
+   printf("Signup successful!\n");
 }
 
+// Function for user login
 void login() {
-    char username[MAX_USERNAME_LENGTH];
-    char password[MAX_PASSWORD_LENGTH];
-    printf("Enter username: ");
-    fgets(username, MAX_USERNAME_LENGTH, stdin);
-    username[strcspn(username, "\n")] = '\0'; // Remove trailing newline if present
-    printf("Enter password: ");
-    fgets(password, MAX_PASSWORD_LENGTH, stdin);
-    password[strcspn(password, "\n")] = '\0'; // Remove trailing newline if present
+   char username[MAX_USERNAME_LENGTH];
+   char password[MAX_PASSWORD_LENGTH];
+   printf("Enter username: ");
+   scanf("%s", username);
+   printf("Enter password: ");
+   scanf("%s", password);
 
-    for (int i = 0; i < numUsers; i++) {
-        if (strcmp(username, users[i].username) == 0 && strcmp(password, users[i].password) == 0) {
-            printf("Login successful!\n");
-            return;
-        }
-    }
+   // Check if entered username and password match any user data
+   for (int i = 0; i < numUsers; i++) {
+       if (strcmp(username, users[i].username) == 0 && strcmp(password, users[i].password) == 0) {
+           printf("Login successful!\n");
+           return;
+       }
+   }
 
-    printf("Invalid username or password!\n");
+   printf("Invalid username or password!\n");
 }
 
+// Main function
 int main() {
-    loadUsersFromFile();
-    int choice;
-    do {
-        printf("1. Signup\n");
-        printf("2. Login\n");
-        printf("3. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
+   loadUsersFromFile();
+   int choice;
+   do {
+       printf("1. Signup\n");
+       printf("2. Login\n");
+       printf("3. Exit\n");
+       printf("Enter your choice: ");
+       scanf("%d", &choice);
 
-        // Clear input buffer
-        while (getchar() != '\n');
+       switch (choice) {
+           case 1:
+               signup();
+               break;
+           case 2:
+               login();
+               break;
+           case 3:
+               printf("Exiting...\n");
+               break;
+           default:
+               printf("Invalid choice!\n");
+       }
+   } while (choice != 3);
 
-        switch (choice) {
-            case 1:
-                signup();
-                break;
-            case 2:
-                login();
-                break;
-            case 3:
-                printf("Exiting...\n");
-                break;
-            default:
-                printf("Invalid choice!\n");
-        }
-    } while (choice != 3);
-
-    return 0;
+   return 0;
 }
 
